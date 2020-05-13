@@ -78,6 +78,57 @@ app.get("/scrape", function (req, res) {
   });
 });
 
+app.post("/save/:id", function (req, res) {
+  Article.findById(req.params.id, function (err, data) {
+    if (data.issaved) {
+      Article.findByIdAndUpdate(
+        req.params.id,
+        { $set: { issaved: false, status: "Save Article" } },
+        { new: true },
+        function (err, data) {
+          res.redirect("/");
+        }
+      );
+    } else {
+      Article.findByIdAndUpdate(
+        req.params.id,
+        { $set: { issaved: true, status: "Saved" } },
+        { new: true },
+        function (err, data) {
+          res.redirect("/saved");
+        }
+      );
+    }
+  });
+});
+
+app.get("/note/:id", function (req, res) {
+  var id = req.params.id;
+  Article.findById(id)
+    .populate("note")
+    .exec(function (err, data) {
+      res.send(data.note);
+    });
+});
+
+app.post("/note/:id", function (req, res) {
+  var note = new Note(req.body);
+  note.save(function (err, doc) {
+    if (err) throw err;
+    Article.findByIdAndUpdate(
+      req.params.id,
+      { $set: { note: doc._id } },
+      { new: true },
+      function (err, newdoc) {
+        if (err) throw err;
+        else {
+          res.send(newdoc);
+        }
+      }
+    );
+  });
+});
+
 // Route for getting all Articles from the db
 app.get("/articles", function (req, res) {
   // Grab every document in the Articles collection
