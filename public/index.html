@@ -1,66 +1,49 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="./style.css" />
+    <meta charset="UTF-8">
     <title>Scraping With Mongoose</title>
-
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- Compiled and minified CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-    />
-
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=IM+Fell+English+SC&display=swap"
-      rel="stylesheet"
-    />
+    <style>
+      body { background-color: #F2F6D0 }
+      #wrapper {
+        width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 5%;
+      }
+      #articles {
+        display: inline-block;
+        overflow: auto;
+        width: 60%;
+        height: 700px;
+      }
+      #notes {
+        float: right;
+        width: 30%;
+      }
+      textarea, input {
+        display: block;
+        width: 100%;
+        background-color: #FCF5C7;
+      }
+      input {
+        height: 36px;
+        font-size: 24px;
+      }
+      textarea {
+        height: 200px;
+        font-size: 18px;
+      }
+    </style>
   </head>
   <body>
-    <nav>
-      <div class="nav-wrapper">
-        <p class="brand-logo">Scrape <i class="fa fa-cogs"></i></p>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"
-          ><i class="fa fa-bars"></i
-        ></a>
-        <ul class="right hide-on-med-and-down">
-          <li><a href="/">Home</a></li>
-          <li><a href="/scrape" class="scraped">Scrape</a></li>
-          <li><a href="/articles">Article JSON</a></li>
-          <li><a href="/notes">Notes</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <ul class="sidenav" id="mobile-demo">
-      <li><a href="/">Home</a></li>
-      <li><a href="/scrape">Scrape</a></li>
-      <li><a href="/articles">Article JSON</a></li>
-      <li><a href="/notes">Notes</a></li>
-    </ul>
-    <div class="jumbotron">Daily News</div>
     <div id="wrapper">
+      <h1>Note Scraper</h1>
+      <h2><i>If you can do this...the homework should be no problem.</i></h2>
       <div id="articles"></div>
       <div id="notes"></div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

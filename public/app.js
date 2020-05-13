@@ -1,40 +1,15 @@
-$(document).ready(function () {
-  $(".sidenav").sidenav();
-});
-
 // Grab the articles as a json
-
-$.getJSON("/articles", function (data) {
+$.getJSON("/articles", function(data) {
   // For each one
   for (var i = 0; i < data.length; i++) {
     // Display the apropos information on the page
-    $("#articles").append(
-      "<a class='no-dec' href=" +
-        ("https://apnews.com" + data[i].link) +
-        ">" +
-        "<div class='article' data-id='" +
-        data[i]._id +
-        "'>" +
-        "<p class ='title'>" +
-        data[i].title +
-        "</p>" +
-        "\n<br>" +
-        "<p class ='body-text'>" +
-        data[i].summary +
-        "</p>" +
-        "</div>" +
-        "</a>" +
-        "<div class='addNotes'>" +
-        "<button data-id='" +
-        data[i]._id +
-        "' class='savenote'>Notes</button>" +
-        "</div>"
-    );
+    $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
   }
 });
 
+
 // Whenever someone clicks a p tag
-$(document).on("click", ".savenote", function () {
+$(document).on("click", "p", function() {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
@@ -43,10 +18,10 @@ $(document).on("click", ".savenote", function () {
   // Now make an ajax call for the Article
   $.ajax({
     method: "GET",
-    url: "/articles/" + thisId,
+    url: "/articles/" + thisId
   })
     // With that done, add the note information to the page
-    .then(function (data) {
+    .then(function(data) {
       console.log(data);
       // The title of the article
       $("#notes").append("<h2>" + data.title + "</h2>");
@@ -55,9 +30,7 @@ $(document).on("click", ".savenote", function () {
       // A textarea to add a new note body
       $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
-      $("#notes").append(
-        "<button data-id='" + data._id + "' id='savenote'>Save Note</button>"
-      );
+      $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
       // If there's a note in the article
       if (data.note) {
@@ -70,7 +43,7 @@ $(document).on("click", ".savenote", function () {
 });
 
 // When you click the savenote button
-$(document).on("click", "#savenote", function () {
+$(document).on("click", "#savenote", function() {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
@@ -82,11 +55,11 @@ $(document).on("click", "#savenote", function () {
       // Value taken from title input
       title: $("#titleinput").val(),
       // Value taken from note textarea
-      body: $("#bodyinput").val(),
-    },
+      body: $("#bodyinput").val()
+    }
   })
     // With that done
-    .then(function (data) {
+    .then(function(data) {
       // Log the response
       console.log(data);
       // Empty the notes section

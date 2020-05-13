@@ -1,135 +1,67 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var db = require("./models");
 var axios = require("axios");
 var cheerio = require("cheerio");
-require("dotenv").config();
 
-var PORT = process.env.PORT || 3000;
+// Require all models
 
-var MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrape";
 
 // Initialize Express
 var app = express();
 
-var mongoDB =
-  "mongodb://mbayers:password1@ds027771.mlab.com:27771/heroku_0d2wls3b";
-
-mongoose.connect(mongoDB, {
-  useMongoClient: true,
-});
-
-var db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-
-// Configure middleware
-
-// Use morgan logger for logging requests
 app.use(logger("dev"));
-// Parse request body as JSON
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Make public a static folder
+
+//Making public a static folder
 app.use(express.static("public"));
 
-// Routes
-
-// A GET route for scraping the echoJS website
-app.get("/scrape", function (req, res) {
-  //Delete anything in current database
-  db.Article.deleteMany({}, function (err) {
-    console.log("collection removed");
-  });
-  // First, we grab the body of the html with axios
-  axios.get("https://apnews.com/").then(function (response) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
-    var result = {};
-    // console.log(response.data);
-
-    // Now, we grab every h2 within an article tag, and do the following:
-    $(".FeedCard").each(function (i, element) {
-      // Save an empty result object
-      if (i < 21) {
-        // Add the text and href of every link, and save them as properties of the result object
-        result.title = $(this).find("h1").text();
-        result.link = $(this).children("a").attr("href");
-        result.summary = $(this).children("a").text().trim();
-      } else {
-        return "Scraped 20 articles!";
-      }
-
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function (dbArticle) {
-          // View the added result in the console
-          console.log(result);
-        })
-        .catch(function (err) {
-          // If an error occurred, log it
-          // console.log(err);
-        });
-    });
-
-    // Send a message to the client
-    res.send("Scrape Complete");
-  });
+// Connect to the Mongo DB
+mongoose.connect("mongodb://localhost/unit18Populater", {
+  useNewUrlParser: true,
 });
 
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.post("/save/:id", function (req, res) {
-  Article.findById(req.params.id, function (err, data) {
-    if (data.issaved) {
-      Article.findByIdAndUpdate(
-        req.params.id,
-        { $set: { issaved: false, status: "Save Article" } },
-        { new: true },
-        function (err, data) {
-          res.redirect("/");
-        }
-      );
-    } else {
-      Article.findByIdAndUpdate(
-        req.params.id,
-        { $set: { issaved: true, status: "Saved" } },
-        { new: true },
-        function (err, data) {
-          res.redirect("/saved");
-        }
-      );
-    }
-  });
-});
+// Routes
 
-app.get("/note/:id", function (req, res) {
-  var id = req.params.id;
-  Article.findById(id)
-    .populate("note")
-    .exec(function (err, data) {
-      res.send(data.note);
+// A GET route for scraping the echoJS website
+app.get("/scrape", function (req, res) {
+  // First, we grab the body of the html with axios
+  axios.get("http://www.echojs.com/").then(function (response) {
+    // Then, we load that into cheerio and save it to $ for a shorthand selector
+    var $ = cheerio.load(response.data);
+
+    // Now, we grab every h2 within an article tag, and do the following:
+    $("article h2").each(function (i, element) {
+      // Save an empty result object
+      var result = {};
+
+      // Add the text and href of every link, and save them as properties of the result object
+      result.title = $(this).children("a").text();
+      result.link = $(this).children("a").attr("href");
+
+      // Create a new Article using the `result` object built from scraping
+      db.Article.create(result)
+        .then(function (dbArticle) {
+          // View the added result in the console
+          console.log(dbArticle);
+        })
+        .catch(function (err) {
+          // If an error occurred, log it
+          console.log(err);
+        });
     });
-});
 
-app.post("/note/:id", function (req, res) {
-  var note = new Note(req.body);
-  note.save(function (err, doc) {
-    if (err) throw err;
-    Article.findByIdAndUpdate(
-      req.params.id,
-      { $set: { note: doc._id } },
-      { new: true },
-      function (err, newdoc) {
-        if (err) throw err;
-        else {
-          res.send(newdoc);
-        }
-      }
-    );
+    // Send a message to the client
+    res.send("Scrape Complete");
   });
 });
 
