@@ -1,0 +1,101 @@
+body {
+  background-color: rgb(223, 223, 223);
+}
+
+#wrapper {
+  width: 70vw;
+  margin-left: 20vw;
+  padding-top: 10px;
+}
+
+.header {
+  width: 50vw;
+  text-align: center;
+  font-size: 40px;
+}
+
+#articles {
+  width: 30vw;
+  height: 100%;
+  margin-top: 10vh;
+}
+
+.article-div {
+  padding: 3vw;
+  padding-right: 2vw;
+  color: white;
+  background-color: rgb(6, 48, 6);
+  margin-bottom: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.data-title {
+  font-size: 20px;
+}
+
+#notes {
+  position: fixed;
+  top: 20vh;
+  width: 30%;
+  background-color: rgb(95, 95, 95);
+  right: 4vw;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.note-button {
+  margin-bottom: 2vh;
+  background-color: rgb(49, 49, 49);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.note-title {
+  color: white;
+  font-size: 15px;
+  padding: 3vh;
+  text-align: center;
+}
+
+#bodyinput {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 1vh;
+}
+
+#titleinput {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 1vh;
+}
+
+p {
+  cursor: pointer;
+}
+textarea,
+input {
+  display: block;
+  width: 100%;
+  background-color: #fcf5c7;
+}
+input {
+  height: 36px;
+  font-size: 24px;
+}
+textarea {
+  height: 200px;
+  font-size: 18px;
+}
