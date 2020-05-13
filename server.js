@@ -10,22 +10,19 @@ var PORT = process.env.PORT || 3000;
 var MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-// Require all models
-var db = require("./models");
-
 // Initialize Express
 var app = express();
 
 var mongoDB =
-  "mongodb://<mbayers>:<password1>@ds027771.mlab.com:27771/heroku_0d2wls3b";
+  "mongodb://mbayers:password1@ds027771.mlab.com:27771/heroku_0d2wls3b";
 
 mongoose.connect(mongoDB, {
   useMongoClient: true,
 });
 
-var dbs = mongoose.connection;
+var db = mongoose.connection;
 
-dbs.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // Configure middleware
 
