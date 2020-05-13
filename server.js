@@ -16,6 +16,17 @@ var db = require("./models");
 // Initialize Express
 var app = express();
 
+var mongoDB =
+  "mongodb://<username>:<password>@ds241489.mlab.com:41489/<DB Name>";
+
+mongoose.connect(mongoDB, {
+  useMongoClient: true,
+});
+
+var dbs = mongoose.connection;
+
+dbs.on("error", console.error.bind(console, "MongoDB connection error:"));
+
 // Configure middleware
 
 // Use morgan logger for logging requests
@@ -25,11 +36,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
-
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/3000", {
-  useNewUrlParser: true,
-});
 
 // Routes
 
