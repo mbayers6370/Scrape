@@ -3,8 +3,9 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var axios = require("axios");
 var cheerio = require("cheerio");
+require("dotenv").config();
 
-var PORT = process.env.port || 3000;
+var PORT = process.env.PORT || 3000;
 
 var MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
@@ -26,7 +27,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/unit18Populater", {
+mongoose.connect("mongodb://localhost/3000", {
   useNewUrlParser: true,
 });
 
