@@ -17,7 +17,7 @@ var db = require("./models");
 var app = express();
 
 var mongoDB =
-  "mongodb://<username>:<password>@ds241489.mlab.com:41489/<DB Name>";
+  "mongodb://<mbayers>:<password1>@ds027771.mlab.com:27771/heroku_0d2wls3b";
 
 mongoose.connect(mongoDB, {
   useMongoClient: true,
