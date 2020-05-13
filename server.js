@@ -1,20 +1,16 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-
-// Our scraping tools
-// Axios is a promised-based http library, similar to jQuery's Ajax method
-// It works on the client and on the server
 var axios = require("axios");
 var cheerio = require("cheerio");
+
+var PORT = process.env.port || 3000;
 
 var MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 // Require all models
 var db = require("./models");
-
-var PORT = process.env.port || 3000;
 
 // Initialize Express
 var app = express();
@@ -76,6 +72,10 @@ app.get("/scrape", function (req, res) {
     // Send a message to the client
     res.send("Scrape Complete");
   });
+});
+
+app.get("/", (req, res) => {
+  res.render("index");
 });
 
 app.post("/save/:id", function (req, res) {
